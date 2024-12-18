@@ -15,9 +15,16 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const token = sessionStorage.getItem('token')
+  
+
+   // Verifique se o token está lá
+ 
   // Busca um único usuário pelo email
-  const getUserByEmail = useCallback(async (email) => { // Incluímos o 'email' como parâmetro
+  const getUserByEmail = useCallback(async (email) => {
+    const token = sessionStorage.getItem('token')
+    // Verifique se o token está lá
+
+ // Incluímos o 'email' como parâmetro
     setLoading(true);
     setError(null);
     try {
@@ -38,7 +45,7 @@ export function UserContextProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     const email = sessionStorage.getItem('email');
@@ -59,6 +66,11 @@ export function UserContextProvider({ children }) {
 
   const updateUser = async (user) => {
     try {
+      const token = sessionStorage.getItem('token')
+      if (!token) {
+        alert('Você não está autenticado!');
+        return;
+      }
       const email = user.email; // Email é usado para identificar o usuário a ser atualizado
       const response = await axios.put(`http://localhost:3000/usuarios/${email}`, user, {
         headers: {
@@ -75,6 +87,7 @@ export function UserContextProvider({ children }) {
 
   // Remove o usuário
   const deleteUser = async (email) => {
+    const token = sessionStorage.getItem('token')
     setLoading(true);
     setError(null);
     try {
@@ -106,3 +119,4 @@ export function UserContextProvider({ children }) {
     </UserContext.Provider>
   );
 }
+

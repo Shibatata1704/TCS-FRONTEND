@@ -1,4 +1,4 @@
-import CategoriaForm from "../../components/CategoriaForm";
+import CategoriaForm from "../../components/categories/CategoriaForm";
 
 export default function CreateCategoria() {
   return <CategoriaForm />

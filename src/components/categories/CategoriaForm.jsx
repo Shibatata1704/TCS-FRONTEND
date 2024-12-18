@@ -1,9 +1,11 @@
 import PropTypes from "prop-types"
-import { useRef, useState } from "react"
-import useStock from "../../hooks/useCategoria"
+import { useRef, useState, useEffect } from "react"
+import useCategoria from "../../hooks/useCategoria"
+import { useParams } from "react-router-dom";
+
 
 CategoriaForm.propTypes = {
-  CategoriaToUpdate: PropTypes.object
+  categoriaToUpdate: PropTypes.object
 }
 
 export default function CategoriaForm({ categoriaToUpdate }) {
@@ -11,9 +13,24 @@ export default function CategoriaForm({ categoriaToUpdate }) {
     nome: "",
   }
 
-  const [categoria, setCategoria] = useState(categoriaToUpdate ? categoriaToUpdate : defaultCategoria)
-  const { addCategoria, updateCategoria } = useStock()
+  const { id } = useParams();
+  const [categoria, setCategoria] = useState(categoriaToUpdate || defaultCategoria)
+  const { addCategoria, updateCategoria, getCategoriaByID } = useCategoria()
   const inputRef = useRef(null)
+  // useEffect(() => {
+  //   const fetchCategoria = async () => {
+  //     const data = await getCategoriaByID(id);
+  //     setCategoria(data);
+  //   };
+
+  //   fetchCategoria();
+  // }, [id, getCategoriaByID]);
+
+  useEffect(() => {
+    if (categoriaToUpdate) {
+      setCategoria(categoriaToUpdate);
+    }
+  }, [categoriaToUpdate]);
 
   const handleChange = (ev) => {
     setCategoria((current) => ({ ...current, [ev.target.name]: ev.target.value }))
@@ -23,7 +40,7 @@ export default function CategoriaForm({ categoriaToUpdate }) {
     ev.preventDefault()
     try {
       if (categoriaToUpdate) {
-        updateCategoria(categoriaToUpdate.id, categoria)
+        updateCategoria(categoria)
         alert("Categoria atualizado com sucesso!")
       } else {
         addCategoria(categoria)
@@ -39,24 +56,33 @@ export default function CategoriaForm({ categoriaToUpdate }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="row">
-        <div>
-          <label htmlFor="name">Nome</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            required
-            ref={inputRef}
-            value={categoria.nome}
-            onChange={handleChange}
-          />
+    <>
+      <div>
+      {categoriaToUpdate ? (
+        <h2>Atualizar Item</h2>
+      ) : (
+        <h2>Cadastrar Item</h2>
+      )}
+    </div>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div>
+            <label htmlFor="nome">Nome</label>
+            <input
+              type="text"
+              name="nome"
+              id="nome"
+              required
+              ref={inputRef}
+              value={categoria.nome || ""}
+              onChange={handleChange}
+            />
+          </div>
         </div>
-      </div>
-      <button className="button is-primary is-large">
-        Salvar
-      </button>
-    </form>
+        <button className="button is-primary is-large">
+          Salvar
+        </button>
+      </form>
+    </>
   )
 }

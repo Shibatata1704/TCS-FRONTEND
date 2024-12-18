@@ -27,7 +27,6 @@ export function CategoriaContextProvider({ children }) {
       const response = await axios.get("http://localhost:3000/categorias", {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
       setCategorias(response.data);
       return response.data; // Retorne os dados para serem usados fora
     } catch (err) {
@@ -50,20 +49,20 @@ export function CategoriaContextProvider({ children }) {
   const getCategoriaByID = useCallback(async (id) => {
     setLoading(true);
     setError(null);
-
+  
     try {
       if (!token) {
         throw new Error("Você não está autenticado!");
       }
-
+  
       const response = await axios.get(`http://localhost:3000/categorias/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      setCategorias(response.data);
-      return response.data; // Retorne os dados para serem usados fora
+      setCategorias(response.data); // Acesse os dados da resposta com 'response.data'
+      return response.data; // Apenas retorna os dados sem chamar `setCategorias`
     } catch (err) {
-      setError(err.message || "Erro ao buscar categorias.");
+      console.error("Erro ao buscar categoria:", err.message);
+      setError(err.message || "Erro ao buscar categoria.");
       return null;
     } finally {
       setLoading(false);
@@ -73,9 +72,8 @@ export function CategoriaContextProvider({ children }) {
 
 
   // Adicionar uma nova categoria
-  const addCategoria = async (nome) => {
-    setLoading(true);
-    setError(null);
+  const addCategoria = async (categoria) => {
+    console.log(categoria)
 
     try {
       if (!token) {
@@ -84,7 +82,7 @@ export function CategoriaContextProvider({ children }) {
 
       const response = await axios.post(
         "http://localhost:3000/categorias",
-        { nome },
+        categoria,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -96,6 +94,35 @@ export function CategoriaContextProvider({ children }) {
     } catch (err) {
       console.error("Erro ao adicionar categoria:", err.message);
       setError(err.message || "Erro ao adicionar categoria.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateCategoria = async (categoria) => {
+    try {
+      if (!token) {
+        throw new Error("Você não está autenticado!");
+      }
+      const id = categoria.id
+      const response = await axios.put(
+        `http://localhost:3000/categorias/${id}`,
+        categoria,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      // setCategorias((prev) =>
+      //   prev.map((categoria) =>
+      //     categoria.id === id ? response.data : categoria
+      //   )
+      // );
+      console.log(response.data)
+      return response.data;
+    } catch (err) {
+      console.error("Erro ao editar categoria:", err.message);
+      setError(err.message || "Erro ao editar categoria.");
     } finally {
       setLoading(false);
     }
@@ -131,6 +158,7 @@ export function CategoriaContextProvider({ children }) {
     getCategorias,
     getCategoriaByID, 
     addCategoria,
+    updateCategoria,
     deleteCategoria,
   };
 
