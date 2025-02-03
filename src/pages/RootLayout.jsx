@@ -45,6 +45,7 @@ export default function RootLayout() {
           <Link to="/">Início</Link>
           {email ? <Link to={`/usuarios/${email}`}>Perfil</Link> : <Link to="/login">Login</Link>}
           {<Link to="/categorias">Categorias</Link>}
+          {<Link to="/avisos">Avisos</Link>}
         </nav>
         <button
           onClick={(handleLogout)}

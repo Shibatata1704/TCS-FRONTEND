@@ -9,6 +9,7 @@ import CategoriasLayout from "./pages/categories/Layout";
 import CreateCategoria from "./pages/categories/CreateCategoria";
 import RootLayout from "./pages/RootLayout";
 import Users from "./pages/users/User/Users";
+import CreateAviso from "./pages/avisos/CreateAviso";
 
 const router = createBrowserRouter([{
   path: "/",
@@ -24,6 +25,19 @@ const router = createBrowserRouter([{
         { path: ":id", element: <ShowCategoria /> },
       ]
     },
+    {
+      path: "usuarios/:email",
+      element: <UserProfile />,
+    },
+    {
+      path: "avisos",
+      element: <CreateAviso />,
+      // children: [
+      //   { index: true, element: <Categorias /> },
+      //   { path: "new", element: <CreateCategoria /> },
+      //   { path: ":id", element: <ShowCategoria /> },
+      // ]
+    },
   ]},
   {
     path: "/login",
@@ -33,10 +47,10 @@ const router = createBrowserRouter([{
     path: "/register",
     element: <Register />
   },
-  {
-    path: "/usuarios/:email",
-    element: <UserProfile />,
-  },
+  // {
+  //   path: "/usuarios/:email",
+  //   element: <UserProfile />,
+  // },
   // {
   //   path: "/",
   //   element: <Home />
@@ -51,7 +65,7 @@ const router = createBrowserRouter([{
   // },
   // {
   //   path: "/usuarios/:email",
-  //   element: <UserProfile />,
+  //   element: <UserProefile />,
   // },
   // {
   //   path: "categorias",
