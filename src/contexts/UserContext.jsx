@@ -12,6 +12,8 @@ UserContextProvider.propTypes = {
 };
 
 export function UserContextProvider({ children }) {
+  const ip = localStorage.getItem("ip") 
+  const porta = localStorage.getItem("porta")
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,7 +34,7 @@ export function UserContextProvider({ children }) {
         alert('Você não está autenticado!');
         return;
       }
-      const response = await axios.get(`http://localhost:3000/usuarios/${email}`, {
+      const response = await axios.get(`http://${ip}:${porta}/usuarios/${email}`, {
         headers: {
           Authorization: `Bearer ${token}` // Envia o token no header
         }
@@ -72,7 +74,7 @@ export function UserContextProvider({ children }) {
         return;
       }
       const email = user.email; // Email é usado para identificar o usuário a ser atualizado
-      const response = await axios.put(`http://localhost:3000/usuarios/${email}`, user, {
+      const response = await axios.put(`http://${ip}:${porta}/usuarios/${email}`, user, {
         headers: {
           Authorization: `Bearer ${token}` // Envia o token no header
         }
@@ -91,7 +93,7 @@ export function UserContextProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:3000/usuarios/${email}`, {
+      await axios.delete(`http://${ip}:${porta}/usuarios/${email}`, {
         headers: {
           Authorization: `Bearer ${token}` // Envia o token no header
         }

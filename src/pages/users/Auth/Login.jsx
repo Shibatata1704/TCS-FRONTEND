@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { API_ROUTES } from "../../../apiRoutes";
 import { jwtDecode } from "jwt-decode";
+import { useIpPort } from '../../../contexts/IpPortContext'; // Verifique o caminho correto
+
 
 export default function Login() {
-    const utf = 'http://localhost:3000';  // Or from an environment variable like process.env.REACT_APP_BASE_URL
-    const loginUrl = `${utf}/login`;
+    // const { ip, porta } = useIpPort();
+    const ip = localStorage.getItem("ip") 
+    const porta = localStorage.getItem("porta")
     const navigate = useNavigate();
     const [user, setUser] = useState({
         email: "",
@@ -24,10 +27,12 @@ export default function Login() {
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
+        console.log(ip, porta)
+        const loginUrl = `http://${ip}:${porta}/login`
         console.log(user)
         try {
 
-            const response = await axios.post('http://localhost:3000/login', user);
+            const response = await axios.post(loginUrl, user);
 
             // Sucesso: verificar a resposta da API
             if (response.status === 200) {

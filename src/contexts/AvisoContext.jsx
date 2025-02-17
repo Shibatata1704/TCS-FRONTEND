@@ -9,13 +9,15 @@ AvisoContextProvider.propTypes = {
 };
 
 export function AvisoContextProvider({ children }) {
+  const ip = localStorage.getItem("ip") 
+  const porta = localStorage.getItem("porta")
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [avisos, setAvisos] = useState([]); // Corrigindo a inicialização
   const token = sessionStorage.getItem("token");
 
   // Função para buscar todas as avisos
-  const getAvisos = useCallback(async () => {
+  const getAvisosByIDCategoria = useCallback(async (idCategoria) => {
     setLoading(true);
     setError(null);
   
@@ -24,7 +26,7 @@ export function AvisoContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
   
-      const response = await axios.get("http://localhost:3000/avisos", {
+      const response = await axios.get(`http://${ip}:${porta}/avisos/${idCategoria}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAvisos(response.data);
@@ -55,7 +57,7 @@ export function AvisoContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
   
-      const response = await axios.get(`http://localhost:3000/avisos/${id}`, {
+      const response = await axios.get(`http://${ip}:${porta}/avisos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAvisos(response.data); // Acesse os dados da resposta com 'response.data'
@@ -81,7 +83,7 @@ export function AvisoContextProvider({ children }) {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/avisos",
+        `http://${ip}:${porta}/avisos`,
         aviso,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +108,7 @@ export function AvisoContextProvider({ children }) {
       }
       const id = aviso.id
       const response = await axios.put(
-        `http://localhost:3000/avisos/${id}`,
+        `http://${ip}:${porta}/avisos/${id}`,
         aviso,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -138,7 +140,7 @@ export function AvisoContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
 
-      await axios.delete(`http://localhost:3000/avisos/${id}`, {
+      await axios.delete(`http://${ip}:${porta}/avisos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -155,7 +157,7 @@ export function AvisoContextProvider({ children }) {
     avisos,
     loading,
     error,
-    getAvisos,
+    getAvisosByIDCategoria,
     getAvisoByID, 
     addAviso,
     updateAviso,

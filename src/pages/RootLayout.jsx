@@ -4,6 +4,8 @@ import axios from "axios";
 export default function RootLayout() {
   const email = sessionStorage.getItem('email')
   const token = sessionStorage.getItem('token')
+  const ip = localStorage.getItem("ip") 
+  const porta = localStorage.getItem("porta")
 
   const handleLogout = async () => {
     try {
@@ -14,7 +16,7 @@ export default function RootLayout() {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/logout", // Substitua pela sua URL de logout
+        `http://${ip}:${porta}/logout`, // Substitua pela sua URL de logout
         {},
         {
           headers: {

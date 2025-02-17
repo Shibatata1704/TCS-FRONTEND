@@ -9,6 +9,8 @@ CategoriaContextProvider.propTypes = {
 };
 
 export function CategoriaContextProvider({ children }) {
+  const ip = localStorage.getItem("ip") 
+  const porta = localStorage.getItem("porta")
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [categorias, setCategorias] = useState([]); // Corrigindo a inicialização
@@ -24,7 +26,7 @@ export function CategoriaContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
   
-      const response = await axios.get("http://localhost:3000/categorias", {
+      const response = await axios.get(`http://${ip}:${porta}/categorias`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCategorias(response.data);
@@ -55,7 +57,7 @@ export function CategoriaContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
   
-      const response = await axios.get(`http://localhost:3000/categorias/${id}`, {
+      const response = await axios.get(`http://${ip}:${porta}/categorias/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCategorias(response.data); // Acesse os dados da resposta com 'response.data'
@@ -81,7 +83,7 @@ export function CategoriaContextProvider({ children }) {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/categorias",
+        `http://${ip}:${porta}/categorias`,
         categoria,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +108,7 @@ export function CategoriaContextProvider({ children }) {
       }
       const id = categoria.id
       const response = await axios.put(
-        `http://localhost:3000/categorias/${id}`,
+        `http://${ip}:${porta}/categorias/${id}`,
         categoria,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -138,7 +140,7 @@ export function CategoriaContextProvider({ children }) {
         throw new Error("Você não está autenticado!");
       }
 
-      await axios.delete(`http://localhost:3000/categorias/${id}`, {
+      await axios.delete(`http://${ip}:${porta}/categorias/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

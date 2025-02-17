@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { API_ROUTES } from "../../../apiRoutes";
 
 export default function Register() {
+  const ip = localStorage.getItem("ip") 
+  const porta = localStorage.getItem("porta")
   const navigate = useNavigate();
   const [user, setUser] = useState({
     nome: "",
@@ -24,7 +26,7 @@ export default function Register() {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/usuarios', {
+      const response = await axios.post(`http://${ip}:${porta}/usuarios`, {
         nome: user.nome,
         email: user.email,
         senha: user.senha

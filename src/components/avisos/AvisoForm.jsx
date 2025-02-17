@@ -34,7 +34,7 @@ export default function AvisoForm({ avisoToUpdate }) {
         // Fetch categorias on mount
         const fetchCategorias = async () => {
             const data = await getCategorias();
-            setCategorias(data);
+            setCategorias(data || []); // Default to empty array if data is null
         };
 
         fetchCategorias();
@@ -92,7 +92,6 @@ export default function AvisoForm({ avisoToUpdate }) {
                             ref={inputRef}
                         />
                     </div>
-
                     <div>
                         <label htmlFor="categoria">Categoria:</label>
                         <select
@@ -102,7 +101,7 @@ export default function AvisoForm({ avisoToUpdate }) {
                             onChange={handleChange}
                         >
                             <option value="">Selecione uma categoria</option>
-                            {categorias.map((categoria) => (
+                            {Array.isArray(categorias) && categorias.map((categoria) => (
                                 <option key={categoria.id} value={categoria.id}>
                                     {categoria.nome}
                                 </option>

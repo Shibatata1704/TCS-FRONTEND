@@ -10,6 +10,8 @@ import CreateCategoria from "./pages/categories/CreateCategoria";
 import RootLayout from "./pages/RootLayout";
 import Users from "./pages/users/User/Users";
 import CreateAviso from "./pages/avisos/CreateAviso";
+import ShowAvisos from "./pages/avisos/Avisos";
+import IP from "./components/ConfigIpPort"
 
 const router = createBrowserRouter([{
   path: "/",
@@ -31,12 +33,12 @@ const router = createBrowserRouter([{
     },
     {
       path: "avisos",
-      element: <CreateAviso />,
-      // children: [
-      //   { index: true, element: <Categorias /> },
-      //   { path: "new", element: <CreateCategoria /> },
-      //   { path: ":id", element: <ShowCategoria /> },
-      // ]
+      // element: <ShowAvisos/>,
+      children: [
+        { index: true, element: <ShowAvisos /> },
+        { path: "new", element: <CreateAviso /> },
+        // { path: ":id", element: <ShowCategoria /> },
+      ]
     },
   ]},
   {
@@ -46,6 +48,10 @@ const router = createBrowserRouter([{
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/ip",
+    element: <IP />,
   },
   // {
   //   path: "/usuarios/:email",
