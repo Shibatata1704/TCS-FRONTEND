@@ -4,7 +4,7 @@ import CategoriaForm from "../../components/categories/CategoriaForm"
 import { useEffect, useState } from "react";
 
 export default function ShowCategoria() {
-  const { getCategoriaByID } = useCategoria()
+  const { getCategorias} = useCategoria()
   const { id } = useParams()
   const [categoria, setCategoria] = useState(null);
   const [loading, setLoading] = useState(true); // Estado de carregamento
@@ -19,18 +19,22 @@ export default function ShowCategoria() {
         setLoading(true);
         setError(null);
         try {
-          const categoria = await getCategoriaByID(id);
-          console.log("Resposta da API:", categoria); // Depuração
-          setCategoria(categoria); // Atualiza o estado com o usuário
+          const todasCategorias = await getCategorias();
+          console.log("Resposta da API:", todasCategorias); // Depuração
+          const categoriaSelecionada = todasCategorias.find(
+            categoria => categoria.id === parseInt(id)
+          );
+          setCategoria(categoriaSelecionada); // Atualiza o estado com o usuário
         } catch (err) {
-          setError("Erro ao carregar usuário.");
+          console.error("Erro ao buscar avisos:", err);
+        setError("Erro ao carregar aviso.");
         } finally {
           setLoading(false);
         }
       };
   
       fetchCategoria();
-    }, [token, id, getCategoriaByID]);
+    }, [token, id, getCategorias]);
   
     if (categoria) {
       console.log("DADOS DO USUARIO", categoria);  // Verifique se os dados de 'user' estão no formato correto

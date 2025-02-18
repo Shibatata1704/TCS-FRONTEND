@@ -11,6 +11,7 @@ export default function AvisosTable() {
     const { getCategorias } = useCategoria();
     const { getAvisosByIDCategoria, deleteAviso } = useAviso();
     const admin = sessionStorage.getItem("admin") === "1" || sessionStorage.getItem("admin") === true;
+    const token = sessionStorage.getItem('token');
 
     // Fetch categorias on mount
     useEffect(() => {
@@ -22,7 +23,6 @@ export default function AvisosTable() {
                 console.error("Erro ao buscar categorias:", err);
             }
         };
-
         fetchCategorias();
     }, [getCategorias]);
 
@@ -79,10 +79,10 @@ export default function AvisosTable() {
         <>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="categoria">Categoria:</label>
+                    <label htmlFor="idCategoria">Categoria:</label>
                     <select
-                        id="categoria"
-                        name="categoria"
+                        id="idCategoria"
+                        name="idCategoria"
                         value={idCategoria} // Agora está usando o estado correto
                         onChange={handleChange}
                     >
@@ -95,7 +95,15 @@ export default function AvisosTable() {
                     </select>
                 </div>
                 <button className="button is-primary is-large">Buscar</button>
+                <Link
+                    to={`/avisos/new`}
+                    className="button is-primary is-small"
+                >
+                    Adicionar
+                </Link>
             </form>
+
+
 
             <table>
                 <thead>
@@ -127,6 +135,7 @@ export default function AvisosTable() {
                                     <>
                                         <Link
                                             to={`/avisos/${aviso.id}`}
+                                            state={{ idCategoria }}
                                             className="button is-primary is-small"
                                         >
                                             Editar

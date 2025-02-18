@@ -20,12 +20,11 @@ export function AvisoContextProvider({ children }) {
   const getAvisosByIDCategoria = useCallback(async (idCategoria) => {
     setLoading(true);
     setError(null);
-  
+    const token = sessionStorage.getItem("token");
     try {
       if (!token) {
         throw new Error("Você não está autenticado!");
       }
-  
       const response = await axios.get(`http://${ip}:${porta}/avisos/${idCategoria}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -40,23 +39,23 @@ export function AvisoContextProvider({ children }) {
   }, [token]);
 
 
-  // Buscar avisos ao carregar o contexto
+  //Buscar avisos ao carregar o contexto
   // useEffect(() => {
-  //   if (token) {
-  //     getAvisos();
+  //   // Verifica se o token e o idCategoria estão definidos antes de fazer a chamada
+  //   if (token && idCategoria) {
+  //     getAvisosByIDCategoria(idCategoria);
   //   }
-  // }, [token, getAvisos]);
+  // }, [token, idCategoria, getAvisosByIDCategoria]);
 
 
   const getAvisoByID = useCallback(async (id) => {
     setLoading(true);
     setError(null);
-  
+    const token = sessionStorage.getItem('token');
     try {
       if (!token) {
         throw new Error("Você não está autenticado!");
       }
-  
       const response = await axios.get(`http://${ip}:${porta}/avisos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });

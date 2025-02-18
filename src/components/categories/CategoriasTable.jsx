@@ -14,7 +14,7 @@ export default function CategoriasTable() {
         setCategorias(data); // Atualizando o estado depois da chamada
       }
     }
-
+    console.log("Categorias recebidas:", categorias);
     // Chama fetchCategorias apenas quando o getCategorias muda
     fetchCategorias();
   }, [getCategorias]);
@@ -45,7 +45,7 @@ export default function CategoriasTable() {
   if (!categorias || categorias.length === 0) {
     return <p>Nenhuma categoria encontrada.</p>;
   }
-  console.log("Categorias recebidas:", categorias);
+  
   return (
     <>
       <table>

@@ -12,7 +12,7 @@ AvisoForm.propTypes = {
 export default function AvisoForm({ avisoToUpdate }) {
     const defaultAviso = {
         descricao: "",
-        categoria: "",
+        idCategoria: "",
     }
 
     const { id } = useParams();
@@ -92,22 +92,25 @@ export default function AvisoForm({ avisoToUpdate }) {
                             ref={inputRef}
                         />
                     </div>
-                    <div>
-                        <label htmlFor="categoria">Categoria:</label>
-                        <select
-                            id="categoria"
-                            name="categoria"
-                            value={aviso.categoria || ''}
-                            onChange={handleChange}
-                        >
-                            <option value="">Selecione uma categoria</option>
-                            {Array.isArray(categorias) && categorias.map((categoria) => (
-                                <option key={categoria.id} value={categoria.id}>
-                                    {categoria.nome}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+
+                    {!avisoToUpdate && (
+                        <div>
+                            <label htmlFor="idCategoria">Categoria:</label>
+                            <select
+                                id="idCategoria"
+                                name="idCategoria"
+                                value={aviso.idCategoria || ''}
+                                onChange={handleChange}
+                            >
+                                <option value="">Selecione uma categoria</option>
+                                {Array.isArray(categorias) && categorias.map((categoria) => (
+                                    <option key={categoria.id} value={categoria.id}>
+                                        {categoria.nome}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
 
                 </div>
                 <button className="button is-primary is-large">
