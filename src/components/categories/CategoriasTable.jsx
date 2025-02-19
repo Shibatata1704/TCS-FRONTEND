@@ -5,7 +5,7 @@ import useCategoria from "../../hooks/useCategoria";
 export default function CategoriasTable() {
   const { getCategorias, deleteCategoria, loading, error } = useCategoria();
   const [categorias, setCategorias] = useState([]); // Estado local para armazenar categorias
-  const admin = sessionStorage.getItem("admin") === "1" || sessionStorage.getItem("admin") === true;
+  const admin = sessionStorage.getItem("admin") === "1" || JSON.parse(sessionStorage.getItem("admin") || "false");
   // Chama getCategorias e salva o retorno em 'categorias'
   useEffect(() => {
     async function fetchCategorias() {

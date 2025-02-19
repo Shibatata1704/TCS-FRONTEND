@@ -10,7 +10,7 @@ export default function AvisosTable() {
     const [categorias, setCategorias] = useState([]); // Armazena as categorias para o select
     const { getCategorias } = useCategoria();
     const { getAvisosByIDCategoria, deleteAviso } = useAviso();
-    const admin = sessionStorage.getItem("admin") === "1" || sessionStorage.getItem("admin") === true;
+    const admin = sessionStorage.getItem("admin") === "1" || JSON.parse(sessionStorage.getItem("admin") || "false");
     const token = sessionStorage.getItem('token');
 
     // Fetch categorias on mount
@@ -95,12 +95,15 @@ export default function AvisosTable() {
                     </select>
                 </div>
                 <button className="button is-primary is-large">Buscar</button>
-                <Link
-                    to={`/avisos/new`}
-                    className="button is-primary is-small"
-                >
-                    Adicionar
-                </Link>
+                {admin && (
+                    <Link
+                        to={`/avisos/new`}
+                        className="button is-primary is-small"
+                    >
+                        Adicionar
+                    </Link>
+                )}
+
             </form>
 
 
